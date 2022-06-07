@@ -58,6 +58,8 @@ The response requires the url, but I also passed in the `bodyJson`.
 
 As the response is a post request, the application sends out information and takes a picture. 
 
+![example picture](docs/screenshot.jpg)
+
 ## JSON Decode
 
 To access certain properties in the state of the camera, the response from the camera needs to be decoded. After the response is decoded, a specific property, such as `batteryLevel`, can be accessed as a map. In the future, I can use this `batteryLevel` to update the state of the application. 
