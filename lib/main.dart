@@ -7,9 +7,15 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String message = 'camera response';
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -40,80 +46,94 @@ class MyApp extends StatelessWidget {
             SizedBox(
               height: 200,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        print('press info!');
+                        var url = Uri.parse('http://192.168.1.1/osc/info');
+                        var header = {
+                          'Content-Type': 'application/json;charset=utf-8'
+                        };
+                        var response = await http.get(url, headers: header);
+                        var encoder = JsonEncoder.withIndent('   ');
+                        var formattedResponse =
+                            encoder.convert(jsonDecode(response.body));
+                        setState(() {
+                          message = formattedResponse;
+                        });
+                        print(formattedResponse);
+                      },
+                      child: const Text('Info'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.green,
+                        shadowColor: Colors.grey,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        print("press state!");
+                        var url = Uri.parse('http://192.168.1.1/osc/state');
+                        var header = {
+                          'Content-Type': 'application/json;charset=utf-8'
+                        };
+                        var response = await http.post(url, headers: header);
+                        print(response.body);
+                        //getting battery Level
+                        var thetaState = jsonDecode(response.body);
+                        var batteryLevel = thetaState['state']['batteryLevel'];
+                        print(batteryLevel);
+                        if (batteryLevel < 0.5) {
+                          print('Charging Required');
+                        }
+                      },
+                      child: const Text('State'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.green,
+                        shadowColor: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: () async {
-                      print('press info!');
-                      var url = Uri.parse('http://192.168.1.1/osc/info');
-                      var header = {
-                        'Content-Type': 'application/json;charset=utf-8'
-                      };
-                      var response = await http.get(url, headers: header);
-                      print(response.body);
-                    },
-                    child: const Text('Info'),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
-                      shadowColor: Colors.grey,
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
                       print("press state!");
-                      var url = Uri.parse('http://192.168.1.1/osc/state');
+                      var url =
+                          Uri.parse('http://192.168.1.1/osc/commands/execute');
                       var header = {
                         'Content-Type': 'application/json;charset=utf-8'
                       };
-                      var response = await http.post(url, headers: header);
+                      var bodyMap = {'name': 'camera.takePicture'};
+                      var bodyJson = jsonEncode(bodyMap);
+                      var response =
+                          await http.post(url, headers: header, body: bodyJson);
                       print(response.body);
-                      //getting battery Level
-                      var thetaState = jsonDecode(response.body);
-                      var batteryLevel = thetaState['state']['batteryLevel'];
-                      print(batteryLevel);
-                      if (batteryLevel < 0.5) {
-                        print('Charging Required');
-                      }
+                      //  print(response.body[0]);
                     },
-                    child: const Text('State'),
+                    child: Icon(Icons.camera),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
-                      shadowColor: Colors.grey,
-                    ),
+                        primary: Colors.black38,
+                        shadowColor: Colors.grey,
+                        fixedSize: Size(60, 60),
+                        shape: CircleBorder()),
                   ),
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    print("press state!");
-                    var url =
-                        Uri.parse('http://192.168.1.1/osc/commands/execute');
-                    var header = {
-                      'Content-Type': 'application/json;charset=utf-8'
-                    };
-                    var bodyMap = {'name': 'camera.takePicture'};
-                    var bodyJson = jsonEncode(bodyMap);
-                    var response =
-                        await http.post(url, headers: header, body: bodyJson);
-                    print(response.body);
-                    //  print(response.body[0]);
-                  },
-                  child: Icon(Icons.camera),
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.black38,
-                      shadowColor: Colors.grey,
-                      fixedSize: Size(60, 60),
-                      shape: CircleBorder()),
-                ),
-              ],
-            )
+            Expanded(
+                flex: 4, child: SingleChildScrollView(child: Text(message))),
           ],
         ),
       )),
