@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
                 'THETA X',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 40,
+                  fontSize: 45,
                   fontFamily: 'Questrial',
                   color: Colors.green,
                 ),
