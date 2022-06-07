@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -68,7 +70,13 @@ class MyApp extends StatelessWidget {
                       };
                       var response = await http.post(url, headers: header);
                       print(response.body);
-                      //   print(response.body[0]);
+                      //getting battery Level
+                      var thetaState = jsonDecode(response.body);
+                      var batteryLevel = thetaState['state']['batteryLevel'];
+                      print(batteryLevel);
+                      if (batteryLevel < 0.5) {
+                        print('Charging Required');
+                      }
                     },
                     child: const Text('State'),
                     style: ElevatedButton.styleFrom(
@@ -90,11 +98,14 @@ class MyApp extends StatelessWidget {
                     var header = {
                       'Content-Type': 'application/json;charset=utf-8'
                     };
-                    var response = await http.post(url, headers: header);
+                    var bodyMap = {'name': 'camera.takePicture'};
+                    var bodyJson = jsonEncode(bodyMap);
+                    var response =
+                        await http.post(url, headers: header, body: bodyJson);
                     print(response.body);
                     //  print(response.body[0]);
                   },
-                  child: const Text('Take Pic'),
+                  child: Icon(Icons.camera),
                   style: ElevatedButton.styleFrom(
                       primary: Colors.black38,
                       shadowColor: Colors.grey,
