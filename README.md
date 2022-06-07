@@ -31,7 +31,11 @@ Finally, the http method is sent out and assigned to a variable called `response
 var response = await http.get(url, headers: header);
 ```
 
-## Take Picture
+At the moment, this application does not display any response to the screen, instead, the output is displayed to the console. 
+
+![output](docs/output.png)
+
+## Take Picture 📷
 
 The command for taking a picture differs slightly from the info and state buttons as we need to run `jsonEncode`. The url for taking the picture uses `/osc/commands/execute` as shown below.
 
@@ -46,8 +50,10 @@ var bodyMap = {'name': 'camera.takePicture'};
 var bodyJson = jsonEncode(bodyMap);
 ```
 
-The response requires the url, but we also passed in the bodyJson.
+The response requires the url, but I also passed in the `bodyJson`.
 
 ```
   var response = await http.post(url, headers: header, body: bodyJson);
 ```
+
+As the response is a post request, the application sends out information and takes a picture. 
