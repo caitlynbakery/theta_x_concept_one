@@ -10,7 +10,7 @@ This application does not use state management, but uses the [http](https://pub.
 * [State](https://api.ricoh/docs/theta-web-api-v2.1/protocols/state/)
 * [camera.takePicture](https://api.ricoh/docs/theta-web-api-v2.1/commands/camera.take_picture/)
 
-## HTTP Package
+## http Package
 
 In order to use the HTTP package, I first needed to download it and import it at the top of my file. All HTTP requests require a url. For example, this is the url for getting the info from the camera. 
 
