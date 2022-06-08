@@ -13,11 +13,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
           body: SafeArea(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             const Padding(
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 27, fontFamily: 'Questrial'),
             ),
-            SizedBox(
+            const SizedBox(
               height: 200,
             ),
             Padding(
@@ -55,7 +56,7 @@ class MyApp extends StatelessWidget {
                       var response = await http.get(url, headers: header);
                       print(response.body);
                     },
-                    child: const Text('Info'),
+                    child: Text('Info'),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.green,
                       shadowColor: Colors.grey,
