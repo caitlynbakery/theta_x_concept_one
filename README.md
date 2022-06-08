@@ -2,7 +2,7 @@
 
 ![screenshot](docs/layout.png)
 
-This application does not use state management, but uses the [http](https://pub.dev/packages/http) package from dart to connect to the camera. Using the http commands, such as get and post, the application receives information and executes commands. Below is a list of this project's button controls using the [THETA API](https://api.ricoh/docs/theta-web-api-v2.1/). 
+This application does not use state management, but uses the [http](https://pub.dev/packages/http) package from Dart to connect to a RICOH THETA X camera. Using the http commands, such as GET and POST, the application receives information and executes commands. Below is a list of this project's button controls using the [THETA WebAPI](https://api.ricoh/docs/theta-web-api-v2.1/). 
 
 ## Button Controls
 
@@ -12,7 +12,7 @@ This application does not use state management, but uses the [http](https://pub.
 
 ## HTTP Package
 
-In order to use the HTTP package, I first needed to download it and import it at the top of my file. All HTTP requests require a url. For example, this is the url for getting the info from the camera. 
+In order to use the http package, I first needed to download it and import it at the top of my file. All HTTP requests require a url. For example, this is the url for getting the info from the camera. 
 
 ```
 var url = Uri.parse('http://192.168.1.1/osc/info');
@@ -56,7 +56,7 @@ The response requires the url, but I also passed in the `bodyJson`.
   var response = await http.post(url, headers: header, body: bodyJson);
 ```
 
-As the response is a post request, the application sends out information and takes a picture. 
+As the response is a POST request, the application sends out information and takes a picture. 
 
 ![example picture](docs/screenshot.jpg)
 
